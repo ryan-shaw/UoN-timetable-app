@@ -1,49 +1,50 @@
 'use strict';
 angular.module('UoNTimetableApp.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
-  // Form data for the login modal
-  $scope.loginData = {};
+.controller('AppCtrl', function($scope, $ionicModal, $ionicLoading, $ionicPopup, $timeout, $localForage, UserService) {
+  $scope.setupData = {};
+  $localForage.bind($scope, 'setupData.username'); 
 
   // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login.html', {
+  $ionicModal.fromTemplateUrl('templates/setup.html', {
     scope: $scope
   }).then(function(modal) {
     $scope.modal = modal;
   });
 
   // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
+  $scope.closeSetup = function() {
     $scope.modal.hide();
-  },
+  };
 
   // Open the login modal
-  $scope.login = function() {
+  $scope.setup = function() {
     $scope.modal.show();
   };
 
   // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
+  $scope.doSetup = function() {
+    $ionicLoading.show({
+      template: 'Finding...'
+    });
 
     // Simulate a login delay. Remove this and replace with your login
     // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
-  }
-})
+    UserService.getCourseByUsername($scope.setupData.username).success(function(data){
+      $ionicLoading.hide();
+      $scope.closeSetup();
+    });
 
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
-})
-
-.controller('PlaylistCtrl', function($scope, $stateParams) {
+    $scope.clearUsername = function(){
+      $scope.setupData.username = '';
+      var popup = $ionicPopup.alert({
+        title: 'Cleared username',
+        template: 'Your username has been cleared!'
+      });
+    };
+    // $timeout(function() {
+    //   $ionicLoading.hide();
+    //   $scope.closeSetup();
+    // }, 1000);
+  };
 });
