@@ -1,10 +1,11 @@
 'use strict';
 angular.module('UoNTimetableApp.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $ionicLoading, $ionicPopup, $timeout, $localForage, UserService) {
+.controller('AppCtrl', function($scope, $ionicModal, $ionicLoading, $ionicPopup, $timeout, $localForage, UserService, $location) {
   $scope.setupData = {};
+  $scope.userData = {};
   $localForage.bind($scope, 'setupData.username'); 
-
+  $localForage.bind($scope, 'userData'); 
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/setup.html', {
     scope: $scope
@@ -31,8 +32,10 @@ angular.module('UoNTimetableApp.controllers', [])
     // Simulate a login delay. Remove this and replace with your login
     // code if using a login system
     UserService.getCourseByUsername($scope.setupData.username).success(function(data){
+      $scope.userData = data;
       $ionicLoading.hide();
       $scope.closeSetup();
+      $location.path('/home');
     });
 
     $scope.clearUsername = function(){
