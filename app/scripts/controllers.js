@@ -1,7 +1,7 @@
 'use strict';
 angular.module('UoNTimetableApp.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $ionicLoading, $ionicPopup, $timeout, $localForage, UserService, $location) {
+.controller('AppCtrl', function($scope, $ionicModal, $ionicLoading, $ionicPopup, $timeout, $localForage, UserService, $state) {
   $scope.setupData = {};
   $scope.userData = {};
   $localForage.bind($scope, 'setupData.username'); 
@@ -35,19 +35,15 @@ angular.module('UoNTimetableApp.controllers', [])
       $scope.userData = data;
       $ionicLoading.hide();
       $scope.closeSetup();
-      $location.path('/home');
+      $state.go('app.home');
     });
-
-    $scope.clearUsername = function(){
+  };
+  
+  $scope.clearUsername = function(){
       $scope.setupData.username = '';
       var popup = $ionicPopup.alert({
         title: 'Cleared username',
         template: 'Your username has been cleared!'
       });
     };
-    // $timeout(function() {
-    //   $ionicLoading.hide();
-    //   $scope.closeSetup();
-    // }, 1000);
-  };
 });
