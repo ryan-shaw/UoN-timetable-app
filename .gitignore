@@ -10,5 +10,6 @@ plugins
 *.swo
 *.log
 *.DS_Store
+release-key.keystore
 
 app/scripts/config.js
