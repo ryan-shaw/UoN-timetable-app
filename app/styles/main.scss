@@ -1,1 +1,23 @@
 // Your application styles go here
+.card:last-child{
+	margin-bottom: 80px;
+}
+
+.item-avatar > h1:first-child{
+	position: absolute;
+	top: 18px;
+	left: 16px;
+	max-width: 45px;
+	max-height: 40px;
+	width: 100%;
+	border-radius: 4px;
+	font-size: 1em;
+	font-weight: bold;
+	word-wrap: break-word;
+	text-overflow: initial;
+	white-space: normal;
+	overflow: initial;
+	&:before{
+		font-size: 2.5em;
+	}
+}
