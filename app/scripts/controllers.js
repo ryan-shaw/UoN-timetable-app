@@ -1,20 +1,24 @@
 'use strict';
 angular.module('UoNTimetableApp.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $ionicLoading, $ionicPopup, $timeout, $localForage, UserService, $state, $rootScope, _){
-  $scope.setupData = {};
+.controller('AppCtrl', function($scope, $ionicModal, $ionicLoading, $ionicPopup, $timeout, $localForage, UserService, $state, $rootScope, _, $ionicActionSheet){
   var currentDate = new Date();
+  // Init scope variables
+  $scope.setupData = {};
+  $scope.modules = [];
   $scope.date = currentDate.toDateString();
   $scope.userData = {};
+  // Set persistant binding
   $localForage.bind($scope, 'setupData.username'); 
   $localForage.bind($scope, 'userData'); 
   $localForage.bind($scope, 'days');
+  $localForage.bind($scope, 'modules');
+
   $localForage.getItem('days').then(function(data){
     $scope.days = data;
     if(typeof data === 'undefined' || data === ''){
       $scope.setup();
     }else{
-      console.log(data);
       loadCurrentDay(data);
     }
   });
@@ -37,6 +41,24 @@ angular.module('UoNTimetableApp.controllers', [])
   }).then(function(modal) {
     $scope.modal = modal;
   });
+
+  $scope.showModuleCardSettings = function(){
+    var moduleItem = this.module;
+    var hideSheet = $ionicActionSheet.show({
+      buttons: [],
+      destructiveText: 'Disable',
+      titleText: '<h4>Module settings</h4>',
+      cancelText: 'Cancel',
+      destructiveButtonClicked: function() {
+        console.log(moduleItem);
+        _.find($scope.modules, {code: moduleItem.code}).enabled = false;
+        return true;
+      },
+      buttonClicked: function(index) {
+        return true;
+      }
+    });
+  };
 
   // Triggered in the login modal to close it
   $scope.closeSetup = function() {
@@ -69,7 +91,6 @@ angular.module('UoNTimetableApp.controllers', [])
         $scope.currDay = day;
       }
     });
-    console.log($scope.currDay, days[0].modules);
     if(typeof $scope.currDay === 'undefined') return;
   };
 
@@ -91,16 +112,35 @@ angular.module('UoNTimetableApp.controllers', [])
   // Perform the login action when the user submits the login form
   $scope.doSetup = function() {
     $ionicLoading.show({
-      template: 'Finding...'
+      template: 'Finding course...'
     });
 
     UserService.getCourseByUsername($scope.setupData.username).success(function(data){
       $scope.userData = data;
+
       $ionicLoading.hide();
-      $scope.closeSetup();
-      $state.go('app.home');
+      $ionicLoading.show({
+        template: 'Loading modules...'
+      });
+      
+      
       UserService.getModules(data.id).success(function(data){
+        $scope.modules = [];
+        var codes = [];
+        data.days.forEach(function(day){
+          day.modules.forEach(function(module){
+            if(!_.contains(codes, module.code)){
+              codes.push(module.code);
+              module.enabled = true;
+              $scope.modules.push(module);
+            }
+          });
+        });
+
         $scope.days = data.days;
+        $ionicLoading.hide();
+        //$state.go('app.home');
+        //$scope.closeSetup();
         loadCurrentDay($scope.days);
       });
     });
@@ -110,6 +150,7 @@ angular.module('UoNTimetableApp.controllers', [])
       $scope.setupData.username = '';
       $scope.userData = '';
       $scope.days = '';
+      $scope.modules = [];
       var popup = $ionicPopup.alert({
         title: 'Cleared data',
         template: 'Your data has been cleared!'

@@ -13,9 +13,20 @@
           <input type="text" ng-model="setupData.username">
         </label>
         <label class="item">
-          <button class="button button-block button-positive" type="submit">Find me!</button>
+          <button class="button button-block button-positive" type="submit">Find my modules!</button>
         </label>
       </div>
     </form>
+    <ul class="list" ng-show="modules">
+      <li class="item item-toggle" ng-repeat="module in modules">
+         {{module.name}}
+         <label class="toggle toggle-balanced">
+           <input type="checkbox" ng-model="module.enabled">
+           <div class="track">
+             <div class="handle"></div>
+           </div>
+         </label>
+      </li>
+    </ul>
   </ion-content>
 </div>

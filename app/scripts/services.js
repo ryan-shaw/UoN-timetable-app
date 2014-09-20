@@ -10,11 +10,14 @@ angular.module('UoNTimetableApp.services', []).service('UserService', function($
 	return api;
 }).
 filter('weekFilter', [function(){
-	return function(modules, week){
+	return function(modules, week, uniqueModules){
+		console.log(uniqueModules);
 		var filtered = [];
 		if(typeof modules === 'undefined') return filtered;
 		modules.forEach(function(module){
 			if(module.weeks.indexOf(week) > -1){
+				var find = _.find(uniqueModules, {code: module.code});
+				if(!find.enabled) return;
 				filtered.push(module);
 			}
 		});
