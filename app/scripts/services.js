@@ -8,10 +8,19 @@ angular.module('UoNTimetableApp.services', []).service('UserService', function($
 		return $http.get('http://uon-timetable-api.jit.su/api/courses/modules/' + id);
 	};
 	return api;
+}).service('ModuleService', function($http){
+	var api = {};
+	api.getStaffMember = function(name, department){
+		return $http.get('http://uon-timetable-api.jit.su/api/staff?name=' + name + '&department=' + department);
+	};
+
+	api.getRoom = function(room){
+		return $http.get('http://uon-timetable-api.jit.su/api/room/' + room);
+	}
+	return api;
 }).
 filter('weekFilter', [function(){
 	return function(modules, week, uniqueModules){
-		console.log(uniqueModules);
 		var filtered = [];
 		if(typeof modules === 'undefined') return filtered;
 		modules.forEach(function(module){

@@ -9,15 +9,12 @@
           No modules to show
         </div>
       </div>
-	  	<div class="card" ng-repeat="module in currDay.modules | weekFilter:currentWeek:modules">
+	  	<div class="card" ng-repeat="module in currDay.modules | weekFilter:currentWeek:modules" >
         <div class="item item-avatar">
-          <h1>{{module.time.start}} {{module.time.end}}</h1>
+          <h1 ng-click="moduleInfo()">{{module.time.start}} {{module.time.end}}</h1>
           <a ng-click="showModuleCardSettings()" href="#" class="icon ion-android-more module-card-setting button-clear"></a>
-          <h2>{{module.name}}</h2>
-          <p>{{module.room}}</p>
-        </div>
-        <div class="item item-text-wrap">
-          This is a basic Card which contains an item that has wrapping text.
+          <h2 ng-click="moduleInfo()">{{module.name}}</h2>
+          <p ng-click="moduleInfo()">{{module.room}}</p>
         </div>
       </div>
     </div>

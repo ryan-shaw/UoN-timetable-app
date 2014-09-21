@@ -1,18 +1,37 @@
 'use strict';
-angular.module('UoNTimetableApp.controllers', [])
+var weekday = new Array(7);
+weekday[0]=  'Sunday';
+weekday[1] = 'Monday';
+weekday[2] = 'Tuesday';
+weekday[3] = 'Wednesday';
+weekday[4] = 'Thursday';
+weekday[5] = 'Friday';
+weekday[6] = 'Saturday';
 
-.controller('AppCtrl', function($scope, $ionicModal, $ionicLoading, $ionicPopup, $timeout, $localForage, UserService, $state, $rootScope, _, $ionicActionSheet){
+angular.module('UoNTimetableApp.controllers', [])
+.controller('MapCtrl', function($scope){
+  $scope.mapOptions = {
+    center: new google.maps.LatLng(35.784, -78.670),
+    zoom: 15,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+})
+.controller('AppCtrl', function($scope, $ionicModal, $ionicLoading, $ionicPopup, $timeout, $localForage, UserService, ModuleService, $state, $rootScope, _, $ionicActionSheet){
   var currentDate = new Date();
   // Init scope variables
   $scope.setupData = {};
   $scope.modules = [];
-  $scope.date = currentDate.toDateString();
+  $scope.date = currentDate.toDateString().substring(0,currentDate.toDateString().lastIndexOf(' '));
   $scope.userData = {};
+  $scope.currentModule = {};
+  $scope.department = ''
   // Set persistant binding
   $localForage.bind($scope, 'setupData.username'); 
   $localForage.bind($scope, 'userData'); 
   $localForage.bind($scope, 'days');
   $localForage.bind($scope, 'modules');
+  $localForage.bind($scope, 'department');
+  $localForage.bind($scope, 'currentModule');
 
   $localForage.getItem('days').then(function(data){
     $scope.days = data;
@@ -41,6 +60,28 @@ angular.module('UoNTimetableApp.controllers', [])
   }).then(function(modal) {
     $scope.modal = modal;
   });
+
+  $scope.addModule = function(){
+    $ionicPopup.show({
+      template: '<input type="text" ng-model="addmodule.code">',
+      title: 'Enter module code',
+      subTitle: 'E.g. G52CPP',
+      scope: $scope,
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Add!',
+          onTap: function(e){
+            $ionicLoading.show({
+              template: 'Finding module...' 
+            });
+          }
+        }
+      ]
+    });
+  };
 
   $scope.showModuleCardSettings = function(){
     var moduleItem = this.module;
@@ -75,16 +116,6 @@ angular.module('UoNTimetableApp.controllers', [])
     // var currentWeek = Math.round((currentDate.getDay() - startWeek.getDay())/7);
 
     $scope.currentWeek = Math.round(((currentDate - (86400000 * currentDate.getDay())) - startWeek)/ 604800000);
-
-    var weekday = new Array(7);
-    weekday[0]=  'Sunday';
-    weekday[1] = 'Monday';
-    weekday[2] = 'Tuesday';
-    weekday[3] = 'Wednesday';
-    weekday[4] = 'Thursday';
-    weekday[5] = 'Friday';
-    weekday[6] = 'Saturday';
-
     // $scope.currDay = _.findWhere(days, {day_name: weekday[currentDate.getDay()]});
     days.forEach(function(day){
       if(day.day_name === weekday[currentDate.getDay()]){
@@ -98,18 +129,47 @@ angular.module('UoNTimetableApp.controllers', [])
      // var currentDate = new Date();
      $scope.currDay = {};
      currentDate.setDate(currentDate.getDate() + 1);
-     $scope.date = currentDate.toDateString();
+     $scope.date = currentDate.toDateString().substring(0,currentDate.toDateString().lastIndexOf(' '));
      loadCurrentDay($scope.days);
   };
 
   $scope.previousDay = function(){
     $scope.currDay = {};
     currentDate.setDate(currentDate.getDate() - 1);
-    $scope.date = currentDate.toDateString();
+    $scope.date = currentDate.toDateString().substring(0,currentDate.toDateString().lastIndexOf(' '));
     loadCurrentDay($scope.days);
   };
 
-  // Perform the login action when the user submits the login form
+  $scope.moduleInfo = function(){
+    $scope.currentModule = _.extend({}, this.module);
+    $ionicLoading.show({
+      template: 'Loading module...'
+    });
+    var done = 0;
+    ModuleService.getStaffMember(this.module.staff, $scope.department).success(function(data){
+      $scope.currentModule.staff = data;
+      if(++done === 2) $ionicLoading.hide();
+    }).error(function(data, status){
+      $ionicLoading.hide();
+      $ionicPopup.alert({
+         title: 'Error!',
+         template: 'Failed to fetch staff members information'
+      });
+    });
+    ModuleService.getRoom(this.module.room.replace('+', '')).success(function(data){
+      $scope.currentModule.room = data.name;
+      
+      if(++done === 2) $ionicLoading.hide();
+    }).error(function(data, status){
+      $ionicLoading.hide();
+      $ionicPopup.alert({
+         title: 'Error!',
+         template: 'Failed to fetch room information'
+      });
+    });
+    $state.go('app.module');
+  };
+
   $scope.doSetup = function() {
     $ionicLoading.show({
       template: 'Finding course...'
@@ -127,6 +187,7 @@ angular.module('UoNTimetableApp.controllers', [])
       UserService.getModules(data.id).success(function(data){
         $scope.modules = [];
         var codes = [];
+        $scope.department = data.department;
         data.days.forEach(function(day){
           day.modules.forEach(function(module){
             if(!_.contains(codes, module.code)){
@@ -142,6 +203,12 @@ angular.module('UoNTimetableApp.controllers', [])
         //$state.go('app.home');
         //$scope.closeSetup();
         loadCurrentDay($scope.days);
+      });
+    }).error(function(data, status){
+      $ionicLoading.hide();
+      $ionicPopup.alert({
+         title: 'Error!',
+         template: 'Failed to fetch course information, are you connected to the internet?'
       });
     });
   };

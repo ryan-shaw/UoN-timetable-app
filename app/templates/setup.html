@@ -5,7 +5,7 @@
       <button class="button button-clear" ng-click="closeSetup()">Close</button>
     </div>
   </ion-header-bar>
-  <ion-content>
+  <ion-content class="setup">
     <form ng-submit="doSetup()">
       <div class="list">
         <label class="item item-input">
@@ -28,5 +28,9 @@
          </label>
       </li>
     </ul>
+
   </ion-content>
+  <div class="bar bar-footer bar-balanced" ng-click="addModule()">
+      <div class="title">Add Module</div>
+    </div>
 </div>

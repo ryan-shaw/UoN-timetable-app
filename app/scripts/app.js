@@ -6,7 +6,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('UoNTimetableApp', ['ionic', 'config', 'UoNTimetableApp.controllers', 'UoNTimetableApp.services', 'LocalForageModule', 'underscore'])
+angular.module('UoNTimetableApp', ['ionic', 'ui.map', 'config', 'UoNTimetableApp.controllers', 'UoNTimetableApp.services', 'LocalForageModule', 'underscore'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -46,6 +46,14 @@ angular.module('UoNTimetableApp', ['ionic', 'config', 'UoNTimetableApp.controlle
       views:{
         'menuContent': {
           templateUrl: 'templates/about.html'
+        }
+      }
+    })
+    .state('app.module', {
+      url: '/module',
+      views:{
+        'menuContent': {
+          templateUrl: 'templates/module.html'
         }
       }
     });
