@@ -17,6 +17,10 @@ angular.module('UoNTimetableApp.services', []).service('UserService', function($
 	api.getRoom = function(room){
 		return $http.get('http://uon-timetable-api.jit.su/api/room/' + room);
 	}
+
+	api.getModule = function(code){
+		return $http.get('http://uon-timetable-api.jit.su/api/module/' + code);
+	}
 	return api;
 }).
 filter('weekFilter', [function(){

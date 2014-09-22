@@ -7,7 +7,7 @@ weekday[3] = 'Wednesday';
 weekday[4] = 'Thursday';
 weekday[5] = 'Friday';
 weekday[6] = 'Saturday';
-
+var codes = [];
 angular.module('UoNTimetableApp.controllers', [])
 .controller('MapCtrl', function($scope){
   $scope.mapOptions = {
@@ -24,7 +24,8 @@ angular.module('UoNTimetableApp.controllers', [])
   $scope.date = currentDate.toDateString().substring(0,currentDate.toDateString().lastIndexOf(' '));
   $scope.userData = {};
   $scope.currentModule = {};
-  $scope.department = ''
+  $scope.department = '';
+  $scope.addmodulecode = '';
   // Set persistant binding
   $localForage.bind($scope, 'setupData.username'); 
   $localForage.bind($scope, 'userData'); 
@@ -62,8 +63,9 @@ angular.module('UoNTimetableApp.controllers', [])
   });
 
   $scope.addModule = function(){
+    $scope.newModule = {};
     $ionicPopup.show({
-      template: '<input type="text" ng-model="addmodule.code">',
+      template: '<input type="text" ng-model="newModule.code">',
       title: 'Enter module code',
       subTitle: 'E.g. G52CPP',
       scope: $scope,
@@ -76,6 +78,28 @@ angular.module('UoNTimetableApp.controllers', [])
           onTap: function(e){
             $ionicLoading.show({
               template: 'Finding module...' 
+            });
+            ModuleService.getModule($scope.newModule.code).success(function(data){
+              console.log($scope.days);
+              console.log(data);
+              data.forEach(function(day, k){
+                var day_name = day.day_name;
+                day.modules.forEach(function(module){
+                  if(!_.contains(codes, module.code)){
+                    codes.push(module.code);
+                    module.enabled = true;
+                    $scope.modules.push(module);
+                  }
+                  $scope.days[k].modules.push(module);
+                });
+              });
+              $ionicLoading.hide();
+            }).error(function(err, data){
+              $ionicPopup.alert({
+                 title: 'Error!',
+                 template: 'Failed to fetch module information, check your module code'
+              });
+              $ionicLoading.hide();
             });
           }
         }
@@ -186,7 +210,7 @@ angular.module('UoNTimetableApp.controllers', [])
       
       UserService.getModules(data.id).success(function(data){
         $scope.modules = [];
-        var codes = [];
+        codes = [];
         $scope.department = data.department;
         data.days.forEach(function(day){
           day.modules.forEach(function(module){
