@@ -1,4 +1,4 @@
-var BASE_URL = 'http://26c8e801-3af8-4df8-8ce8-d34989e88e57.pub.cloud.scaleway.com';
+var BASE_URL = 'http://timetable.min.vc';
 
 angular.module('UoNTimetableApp.services', []).service('UserService', function($http){
 	var api = {};
