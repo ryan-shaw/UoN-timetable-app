@@ -27,8 +27,8 @@ angular.module('UoNTimetableApp.controllers', [])
   $scope.department = '';
   $scope.addmodulecode = '';
   // Set persistant binding
-  $localForage.bind($scope, 'setupData.username'); 
-  $localForage.bind($scope, 'userData'); 
+  $localForage.bind($scope, 'setupData.username');
+  $localForage.bind($scope, 'userData');
   $localForage.bind($scope, 'days');
   $localForage.bind($scope, 'modules');
   $localForage.bind($scope, 'department');
@@ -49,7 +49,7 @@ angular.module('UoNTimetableApp.controllers', [])
     }
   };
 
-  $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){ 
+  $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
     if(toState.name === 'app.home' && ($scope.setupData.username === '' || typeof $scope.setupData.username === 'undefined')){
       $scope.setup();
     }
@@ -77,7 +77,7 @@ angular.module('UoNTimetableApp.controllers', [])
           text: 'Add!',
           onTap: function(e){
             $ionicLoading.show({
-              template: 'Finding module...' 
+              template: 'Finding module...'
             });
             ModuleService.getModule($scope.newModule.code).success(function(data){
               console.log($scope.days);
@@ -136,7 +136,7 @@ angular.module('UoNTimetableApp.controllers', [])
   };
 
   var loadCurrentDay = function(days){
-    var startWeek = new Date(2014, 8, 15);
+    var startWeek = new Date(2015, 8, 14);
     // var currentWeek = Math.round((currentDate.getDay() - startWeek.getDay())/7);
 
     $scope.currentWeek = Math.round(((currentDate - (86400000 * currentDate.getDay())) - startWeek)/ 604800000);
@@ -182,7 +182,7 @@ angular.module('UoNTimetableApp.controllers', [])
     });
     ModuleService.getRoom(this.module.room.replace('+', '')).success(function(data){
       $scope.currentModule.room = data.name;
-      
+
       if(++done === 2) $ionicLoading.hide();
     }).error(function(data, status){
       $ionicLoading.hide();
@@ -206,8 +206,8 @@ angular.module('UoNTimetableApp.controllers', [])
       $ionicLoading.show({
         template: 'Loading modules...'
       });
-      
-      
+
+
       UserService.getModules(data.id).success(function(data){
         $scope.modules = [];
         codes = [];
