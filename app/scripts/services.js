@@ -1,25 +1,27 @@
+var BASE_URL = 'http://26c8e801-3af8-4df8-8ce8-d34989e88e57.pub.cloud.scaleway.com';
+
 angular.module('UoNTimetableApp.services', []).service('UserService', function($http){
 	var api = {};
 	api.getCourseByUsername = function(username){
-		return $http.get('http://uon-timetable-api.jit.su/api/courses/modules/username/' + username);
+		return $http.get(BASE_URL + '/api/courses/modules/username/' + username);
 	};
 
 	api.getModules = function(id){
-		return $http.get('http://uon-timetable-api.jit.su/api/courses/modules/' + id);
+		return $http.get(BASE_URL + '/api/courses/modules/' + id);
 	};
 	return api;
 }).service('ModuleService', function($http){
 	var api = {};
 	api.getStaffMember = function(name, department){
-		return $http.get('http://uon-timetable-api.jit.su/api/staff?name=' + name + '&department=' + department);
+		return $http.get(BASE_URL + '/api/staff?name=' + name + '&department=' + department);
 	};
 
 	api.getRoom = function(room){
-		return $http.get('http://uon-timetable-api.jit.su/api/room/' + room);
+		return $http.get(BASE_URL + '/api/room/' + room);
 	}
 
 	api.getModule = function(code){
-		return $http.get('http://uon-timetable-api.jit.su/api/module/' + code);
+		return $http.get(BASE_URL + '/api/module/' + code);
 	}
 	return api;
 }).
