@@ -44,5 +44,9 @@
   },
   "scripts": {
     "test": "grunt test"
-  }
+  },
+  "cordovaPlugins": [],
+  "cordovaPlatforms": [
+    "ios"
+  ]
 }
