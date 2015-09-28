@@ -11,5 +11,5 @@ plugins
 *.log
 *.DS_Store
 release-key.keystore
-
+.io-config.json
 app/scripts/config.js
