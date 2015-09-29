@@ -19,6 +19,10 @@
                         {
                             "xml": "<feature name=\"Whitelist\"><param name=\"android-package\" value=\"org.apache.cordova.whitelist.WhitelistPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"IonicDeploy\"><param name=\"android-package\" value=\"com.ionic.deploy.IonicDeploy\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -41,6 +45,9 @@
         },
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "vc.min.UoNTimetableApp"
+        },
+        "ionic-plugin-deploy": {
+            "PACKAGE_NAME": "vc.min.UoNTimetable"
         }
     },
     "dependent_plugins": {

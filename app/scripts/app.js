@@ -6,7 +6,17 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('UoNTimetableApp', ['ionic', 'ui.map', 'config', 'UoNTimetableApp.controllers', 'UoNTimetableApp.services', 'LocalForageModule', 'underscore'])
+angular.module('UoNTimetableApp', ['ionic', 'ionic.service.core', 'ionic.service.deploy', 'ui.map', 'config', 'UoNTimetableApp.controllers', 'UoNTimetableApp.services', 'LocalForageModule', 'underscore'])
+
+.config(['$ionicAppProvider', function($ionicAppProvider) {
+  // Identify app
+  $ionicAppProvider.identify({
+    // The App ID (from apps.ionic.io) for the server
+    app_id: '4c223b8e',
+    // The public API key all services will use for this app
+    api_key: '13875199428e02c2d925fabafbf1b954a0a70422143f4af8'
+  });
+}])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -60,4 +70,3 @@ angular.module('UoNTimetableApp', ['ionic', 'ui.map', 'config', 'UoNTimetableApp
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');
 });
-

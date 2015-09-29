@@ -1,4 +1,5 @@
 {
   "name": "UoN-timetable-app",
-  "app_id": "4c223b8e"
+  "app_id": "4c223b8e",
+  "documentRoot": "app/"
 }

@@ -45,7 +45,9 @@
   "scripts": {
     "test": "grunt test"
   },
-  "cordovaPlugins": [],
+  "cordovaPlugins": [
+    "ionic-plugin-deploy"
+  ],
   "cordovaPlatforms": [
     "ios",
     "android"

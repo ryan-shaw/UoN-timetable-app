@@ -2,6 +2,7 @@
 .card{
 	margin: 0;
 	box-shadow: none;
+	border-bottom: 1px solid #ccc;
 	&:last-child{
 		margin-bottom: 80px;
 	}
