@@ -1,8 +1,11 @@
 // Your application styles go here
-.card:last-child{
-	margin-bottom: 80px;
+.card{
+	margin: 0;
+	box-shadow: none;
+	&:last-child{
+		margin-bottom: 80px;
+	}
 }
-
 .item-avatar > h1:first-child{
 	position: absolute;
 	top: 18px;

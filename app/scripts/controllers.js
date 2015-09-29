@@ -174,11 +174,8 @@ angular.module('UoNTimetableApp.controllers', [])
       $scope.currentModule.staff = data;
       if(++done === 2) $ionicLoading.hide();
     }).error(function(data, status){
+      $scope.currentModule.staff = undefined;
       $ionicLoading.hide();
-      $ionicPopup.alert({
-         title: 'Error!',
-         template: 'Failed to fetch staff members information'
-      });
     });
     ModuleService.getRoom(this.module.room.replace('+', '')).success(function(data){
       $scope.currentModule.room = data.name;
