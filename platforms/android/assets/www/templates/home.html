@@ -1,0 +1,30 @@
+<ion-view title="{{date}}"  hide-back-button="true">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+  <ion-content class="has-header">
+  	<div ng-show="setupData.username">
+      <div class="card card-calm" ng-hide="(currDay.modules | weekFilter:currentWeek:modules).length">
+        <div class="item item-text-wrap">
+          No modules to show
+        </div>
+      </div>
+	  	<div class="card" ng-repeat="module in currDay.modules | weekFilter:currentWeek:modules" >
+        <div class="item item-avatar">
+          <h1 ng-click="moduleInfo()">{{module.time.start}} {{module.time.end}}</h1>
+          <a ng-click="showModuleCardSettings()" href="#" class="icon ion-android-more module-card-setting button-clear"></a>
+          <h2 ng-click="moduleInfo()">{{module.name}}</h2>
+          <p ng-click="moduleInfo()">{{module.room}}</p>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+  <div class="tabs">
+  <a class="tab-item" ng-click="previousDay()">
+    &#8592; Back 
+  </a>
+  <a class="tab-item" ng-click="nextDay()">
+    Next &#8594;
+  </a>
+</div>
+</ion-view>

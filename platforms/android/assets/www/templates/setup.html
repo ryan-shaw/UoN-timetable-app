@@ -1,0 +1,36 @@
+<div class="modal">
+  <ion-header-bar>
+    <h1 class="title">Timetable setup</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeSetup()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content class="setup">
+    <form ng-submit="doSetup()">
+      <div class="list">
+        <label class="item item-input">
+          <span class="input-label">Username</span>
+          <input type="text" ng-model="setupData.username">
+        </label>
+        <label class="item">
+          <button class="button button-block button-positive" type="submit">Find my modules!</button>
+        </label>
+      </div>
+    </form>
+    <ul class="list" ng-show="modules">
+      <li class="item item-toggle" ng-repeat="module in modules">
+         {{module.name}}
+         <label class="toggle toggle-balanced">
+           <input type="checkbox" ng-model="module.enabled">
+           <div class="track">
+             <div class="handle"></div>
+           </div>
+         </label>
+      </li>
+    </ul>
+
+  </ion-content>
+  <div class="bar bar-footer bar-balanced" ng-click="addModule()">
+      <div class="title">Add Module</div>
+    </div>
+</div>

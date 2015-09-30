@@ -9,29 +9,7 @@
                 "parents": {
                     "/*": [
                         {
-                            "xml": "<feature name=\"File\"><param name=\"android-package\" value=\"org.apache.cordova.file.FileUtils\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"CordovaHttpPlugin\"><param name=\"android-package\" value=\"com.synconset.CordovaHttpPlugin\" /></feature>",
-                            "count": 1
-                        },
-                        {
                             "xml": "<feature name=\"Whitelist\"><param name=\"android-package\" value=\"org.apache.cordova.whitelist.WhitelistPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"IonicDeploy\"><param name=\"android-package\" value=\"com.ionic.deploy.IonicDeploy\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        }
-                    ]
-                }
-            },
-            "AndroidManifest.xml": {
-                "parents": {
-                    "/*": [
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
                             "count": 1
                         }
                     ]
@@ -40,19 +18,9 @@
         }
     },
     "installed_plugins": {
-        "com.synconset.cordovaHTTP": {
-            "PACKAGE_NAME": "vc.min.UoNTimetableApp"
-        },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "vc.min.UoNTimetableApp"
-        },
-        "ionic-plugin-deploy": {
             "PACKAGE_NAME": "vc.min.UoNTimetable"
         }
     },
-    "dependent_plugins": {
-        "org.apache.cordova.file": {
-            "PACKAGE_NAME": "vc.min.UoNTimetableApp"
-        }
-    }
+    "dependent_plugins": {}
 }

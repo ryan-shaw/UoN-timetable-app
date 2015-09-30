@@ -1,0 +1,51 @@
+<ion-view title="About">
+
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+
+  <ion-content class="has-header">
+    <div class="card">
+      <div class="item item-divider">
+        Open Sourced
+      </div>
+      <div class="item item-text-wrap">
+        The app and API are open source and contributions are welcome to both repositories.
+
+        <div class="button-bar bar-positive">
+          <a class="button" onclick="window.open('https://github.com/ryanshawty/UoN-timetable-app', '_system', 'location=yes')">App repo</a>
+          <a class="button" onclick="window.open('https://github.com/ryanshawty/UoN-timetable-scraper', '_system', 'location=yes')">API repo</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="item item-divider">
+      License
+      </div>
+      <div class="item item-text-wrap">
+          Project is licensed under the MIT license which can be found on the GitHub repo.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="item item-divider">
+      App info
+      </div>
+      <div class="item item-text-wrap">
+        Created by Ryan Shaw
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="item item-divider">
+      Data
+      </div>
+      <div class="item item-text-wrap">
+        <button class="button button-assertive" ng-click="clearUsername()">
+          Clear data
+        </button>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
