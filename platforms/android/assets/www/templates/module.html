@@ -1,0 +1,34 @@
+<ion-view title="{{currentModule.code}}">
+	<ion-content class="has-header">
+
+		<div class="row">
+		  <div class="col"><h3>{{currentModule.name}}</h3></div>
+		</div>
+		<div class="list">
+		  <div class="item">
+			Times: {{currentModule.time.start}} - {{currentModule.time.end}}
+		  </div>
+			<div ng-hide="!currentModule.staff">
+		  	<div class="item item-divider">
+			    {{currentModule.staff.short}}
+			  </div>
+			  <a class="item" href="mailto:{{currentModule.staff.email}}">
+			    {{currentModule.staff.email}}
+			  </a>
+			</div>
+		  <div class="item item-divider">
+		    Room
+		  </div>
+		  <span class="item">
+		    {{currentModule.room}}
+		  </span>
+		</div>
+		<!-- <iframe
+		  width="100%"
+		  height="300"
+		  frameborder="0" style="border:0"
+		  src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCzoA9tD4kMWii4bIWy1bF1_76n1ODQoBc&q=jubilee campus the exchange building c3 nottingham">
+		</iframe> -->
+		<!-- <pre>{{currentModule}}</pre> -->
+	</ion-content>
+</ion-view>

@@ -1,9 +1,7 @@
 node_modules
-www
 .tmp
 .sass-cache
-app/bower_components
-coverage
+bower_components
 platforms
 *.swp
 *.swo
@@ -11,4 +9,4 @@ platforms
 *.DS_Store
 release-key.keystore
 .io-config.json
-app/scripts/config.js
+Timetable.apk
