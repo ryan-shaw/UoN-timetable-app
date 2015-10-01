@@ -12,40 +12,40 @@ angular.module('UoNTimetableApp.controllers', [])
 .controller('MapCtrl', function($scope){
 
 })
-.controller('AppCtrl', function($scope, $ionicModal, $ionicLoading, $ionicPopup, $timeout, $localForage, UserService, ModuleService, $state, $rootScope, _, $ionicActionSheet, $ionicDeploy){
-
-  $ionicDeploy.watch({interval: 10 * 60 * 1000}).then(function() {}, function() {}, function(deployUpdateAvailable) { // Check every 10 min and at startup
-    if(deployUpdateAvailable){
-      $scope.updateText = 'Do you want to update now?';
-      $scope.update = {};
-      $scope.update.updateProgress = 0;
-      var popup = $ionicPopup.show({
-        template: $scope.updateText,
-        title: 'Update available!',
-        buttons:[
-          {
-            text: 'No'
-          },
-          {
-            text: 'Yes',
-            onTap: function(e){
-              var loading = $ionicLoading.show({
-                template: 'Downloading update... <span>{{update.updateProgress}}</span>%',
-                scope: $scope
-              });
-              $ionicDeploy.update().then(function(deployResult) {
-                loading.hide();
-              }, function(deployUpdateError) {
-                loading.hide();
-              }, function(deployProgress) {
-                $scope.update.updateProgress = Math.round(deployProgress);
-              });
-            }
-          }
-        ]
-      });
-    }
-  });
+.controller('AppCtrl', function($scope, $ionicModal, $ionicLoading, $ionicPopup, $timeout, $localForage, UserService, ModuleService, $state, $rootScope, _, $ionicActionSheet){
+  // var deploy = new Ionic.Deploy();
+  // deploy.watch({interval: 10 * 60 * 1000}).then(function() {}, function() {}, function(deployUpdateAvailable) { // Check every 10 min and at startup
+  //   if(deployUpdateAvailable){
+  //     $scope.updateText = 'Do you want to update now?';
+  //     $scope.update = {};
+  //     $scope.update.updateProgress = 0;
+  //     var popup = $ionicPopup.show({
+  //       template: $scope.updateText,
+  //       title: 'Update available!',
+  //       buttons:[
+  //         {
+  //           text: 'No'
+  //         },
+  //         {
+  //           text: 'Yes',
+  //           onTap: function(e){
+  //             var loading = $ionicLoading.show({
+  //               template: 'Downloading update... <span>{{update.updateProgress}}</span>%',
+  //               scope: $scope
+  //             });
+  //             deploy.update().then(function(deployResult) {
+  //               loading.hide();
+  //             }, function(deployUpdateError) {
+  //               loading.hide();
+  //             }, function(deployProgress) {
+  //               $scope.update.updateProgress = Math.round(deployProgress);
+  //             });
+  //           }
+  //         }
+  //       ]
+  //     });
+  //   }
+  // });
 
   var currentDate = new Date();
   // Init scope variables

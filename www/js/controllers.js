@@ -12,9 +12,9 @@ angular.module('UoNTimetableApp.controllers', [])
 .controller('MapCtrl', function($scope){
 
 })
-.controller('AppCtrl', function($scope, $ionicModal, $ionicLoading, $ionicPopup, $timeout, $localForage, UserService, ModuleService, $state, $rootScope, _, $ionicActionSheet, $ionicDeploy){
-
-  $ionicDeploy.watch({interval: 10 * 60 * 1000}).then(function() {}, function() {}, function(deployUpdateAvailable) { // Check every 10 min and at startup
+.controller('AppCtrl', function($scope, $ionicModal, $ionicLoading, $ionicPopup, $timeout, $localForage, UserService, ModuleService, $state, $rootScope, _, $ionicActionSheet){
+  var deploy = new Ionic.Deploy();
+  deploy.watch({interval: 10 * 60 * 1000}).then(function() {}, function() {}, function(deployUpdateAvailable) { // Check every 10 min and at startup
     if(deployUpdateAvailable){
       $scope.updateText = 'Do you want to update now?';
       $scope.update = {};
@@ -33,7 +33,7 @@ angular.module('UoNTimetableApp.controllers', [])
                 template: 'Downloading update... <span>{{update.updateProgress}}</span>%',
                 scope: $scope
               });
-              $ionicDeploy.update().then(function(deployResult) {
+              deploy.update().then(function(deployResult) {
                 loading.hide();
               }, function(deployUpdateError) {
                 loading.hide();
