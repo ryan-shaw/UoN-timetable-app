@@ -1,0 +1,11 @@
+node_modules
+.tmp
+.sass-cache
+bower_components
+platforms
+*.swp
+*.swo
+*.log
+*.DS_Store
+release-key.keystore
+.io-config.json
