@@ -1,9 +1,20 @@
 var BASE_URL = 'http://timetable.min.vc';
-
+BASE_URL = 'http://localhost:8081';
 angular.module('UoNTimetableApp.services', []).service('UserService', function($http){
 	var api = {};
 	api.getCourseByUsername = function(username){
 		return $http.get(BASE_URL + '/api/courses/modules/username/' + username);
+	};
+
+	api.requestVerificationCode = function(username){
+		return $http.get(BASE_URL + '/api/verify/' + username);
+	};
+
+	api.sendVerificationCode = function(username, code, ionicId){
+		return $http.post(BASE_URL + '/api/verify/' + username, {
+			code: code,
+			ionicId: ionicId
+		});
 	};
 
 	api.getModules = function(id){

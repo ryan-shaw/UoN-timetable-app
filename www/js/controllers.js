@@ -221,47 +221,102 @@ angular.module('UoNTimetableApp.controllers', [])
     $state.go('app.module');
   };
 
-  $scope.doSetup = function() {
-    $ionicLoading.show({
-      template: 'Finding course...'
-    });
-
-    UserService.getCourseByUsername($scope.setupData.username).success(function(data){
-      $scope.userData = data;
-
-      $ionicLoading.hide();
-      $ionicLoading.show({
-        template: 'Loading modules...'
-      });
-
-
-      UserService.getModules(data.id).success(function(data){
-        $scope.modules = [];
-        codes = [];
-        $scope.department = data.department;
-        data.days.forEach(function(day){
-          day.modules.forEach(function(module){
-            if(!_.contains(codes, module.code)){
-              codes.push(module.code);
-              module.enabled = true;
-              $scope.modules.push(module);
-            }
+  $scope.codePopup = function(){
+    var popup = $ionicPopup.show({
+      template: '<input ng-model="setupData.code"/>',
+      title: 'Enter code from email',
+      scope: $scope,
+      buttons:[{
+        text: 'Cancel'
+      }, {
+        text: 'Submit',
+        onTap: function(e){
+          var loading = $ionicLoading.show({
+            template: 'Sending request...'
           });
-        });
-
-        $scope.days = data.days;
-        $ionicLoading.hide();
-        //$state.go('app.home');
-        //$scope.closeSetup();
-        loadCurrentDay($scope.days);
-      });
-    }).error(function(data, status){
-      $ionicLoading.hide();
-      $ionicPopup.alert({
-         title: 'Error!',
-         template: 'Failed to fetch course information, are you connected to the internet?'
-      });
+          UserService.sendVerificationCode($scope.setupData.username, $scope.setupData.code, $rootScope.user.id).then(function(data){
+            $ionicLoading.hide();
+            popup.close();
+          }, function(err){
+            loading.hide();
+            $ionicPopup.show({
+              template: 'An error has occurred please try again later. Error: {{err}}'
+            });
+          });
+        }
+      }]
     });
+  };
+
+  $scope.doSetup = function() {
+    var confirmation = $ionicPopup.show({
+      template: 'This will send an email to confirm your username to: {{setupData.username}}@nottingham.ac.uk',
+      title: 'Confirmation',
+      scope: $scope,
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Continue',
+          onTap: function(e){
+            $ionicLoading.show({
+              template: 'Sending code...'
+            });
+            UserService.requestVerificationCode($scope.setupData.username).then(function(data){
+              $ionicLoading.hide();
+              $scope.codePopup();
+            }, function(err){
+              $ionicLoading.hide();
+              $scope.err = err;
+              $ionicPopup.show({
+                template: 'An error has occurred please try again later. Error: {{err}}'
+              });
+            });
+          }
+        }
+      ]
+    });
+    // $ionicLoading.show({
+    //   template: 'Finding course...'
+    // });
+    //
+    // UserService.getCourseByUsername($scope.setupData.username).success(function(data){
+    //   $scope.userData = data;
+    //
+    //   $ionicLoading.hide();
+    //   $ionicLoading.show({
+    //     template: 'Loading modules...'
+    //   });
+    //
+    //
+    //   UserService.getModules(data.id).success(function(data){
+    //     $scope.modules = [];
+    //     codes = [];
+    //     $scope.department = data.department;
+    //     data.days.forEach(function(day){
+    //       day.modules.forEach(function(module){
+    //         if(!_.contains(codes, module.code)){
+    //           codes.push(module.code);
+    //           module.enabled = true;
+    //           $scope.modules.push(module);
+    //         }
+    //       });
+    //     });
+    //
+    //     $scope.days = data.days;
+    //     $ionicLoading.hide();
+    //     //$state.go('app.home');
+    //     //$scope.closeSetup();
+    //     loadCurrentDay($scope.days);
+    //   });
+    // }).error(function(data, status){
+    //   $ionicLoading.hide();
+    //   $ionicPopup.alert({
+    //      title: 'Error!',
+    //      template: 'Failed to fetch course information, are you connected to the internet?'
+    //   });
+    // });
   };
 
   $scope.clearUsername = function(){
